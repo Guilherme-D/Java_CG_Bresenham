@@ -10,8 +10,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.sql.JDBCType;
+import java.sql.Time;
 import javax.swing.JColorChooser;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -59,8 +63,11 @@ public class Graphic extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Painel_drawMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                Painel_drawMouseExited(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Painel_drawMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                Painel_drawMouseReleased(evt);
             }
         });
 
@@ -93,7 +100,7 @@ public class Graphic extends javax.swing.JFrame {
         );
         Selected_colorLayout.setVerticalGroup(
             Selected_colorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 40, Short.MAX_VALUE)
         );
 
         buttonGroup1.add(Reta);
@@ -105,7 +112,12 @@ public class Graphic extends javax.swing.JFrame {
 
         jLabel1.setText("Desenhar: ");
 
-        btn_desfazer_reta.setText("Desfazer Reta");
+        btn_desfazer_reta.setText("Desfazer");
+        btn_desfazer_reta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_desfazer_retaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,14 +127,15 @@ public class Graphic extends javax.swing.JFrame {
                 .addComponent(Painel_draw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Color_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Selected_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Reta)
                     .addComponent(Circunferencia)
                     .addComponent(jLabel1)
-                    .addComponent(btn_desfazer_reta))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Color_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Selected_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -131,16 +144,16 @@ public class Graphic extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Selected_color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Color_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
+                    .addComponent(Color_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Reta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Circunferencia)
-                .addGap(209, 209, 209)
-                .addComponent(btn_desfazer_reta)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(464, Short.MAX_VALUE))
             .addComponent(Painel_draw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -158,12 +171,11 @@ public class Graphic extends javax.swing.JFrame {
         Graphics g = super.getGraphics();
         
         if(evt.getButton() == evt.BUTTON1){
-            System.out.println("bt1");
-            
+                       
             //Coordenadas x e y do mouse quando clicar no painel
-        int x = getMousePosition().x;
-        int y = getMousePosition().y;
-        cont_click++;
+            int x = getMousePosition().x;
+            int y = getMousePosition().y;
+            cont_click++;
         
         
             //Cria um circulo vermelho para indicar onde foi clicado
@@ -185,19 +197,33 @@ public class Graphic extends javax.swing.JFrame {
                 
                 if(Reta.isSelected()){
                     Bresenham_Line(x1, y1, x2, y2);
-                    pontos_reta.add(x1);
-                    pontos_reta.add(y1);
-                    pontos_reta.add(x2);
-                    pontos_reta.add(y2);
+                    pontos.add(x1);
+                    pontos.add(y1);
+                    pontos.add(x2);
+                    pontos.add(y2);
+                    rouc.add(1);
                 }else{
-                 Bresenham_circle(x1, y1, x2, y2);   
+                 Bresenham_circle(x1, y1, x2, y2);  
+                    pontos.add(x1);
+                    pontos.add(y1);
+                    pontos.add(x2);
+                    pontos.add(y2);
+                    rouc.add(2);
                 }
             }
             
-        }else if(evt.getButton() == evt.BUTTON2){
+        }else if(evt.getButton() == evt.BUTTON3){
         
-           
-            
+           if(g.getColor() != Color.WHITE){
+               int a = getMousePosition().x;
+               int b = getMousePosition().y;
+                
+                g.drawOval(getMousePosition().x, getMousePosition().y, 6, 6);
+               if(pontos.contains(a)){
+                    System.out.println(a+" "+b);
+               }
+           }
+            System.out.println("aa");
         }
         
         
@@ -217,25 +243,146 @@ public class Graphic extends javax.swing.JFrame {
     private void Painel_drawMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseDragged
         // TODO add your handling code here:
         Graphics g = super.getGraphics();
-        Graphics2D g2d = (Graphics2D)g;
+       /* Graphics2D g2d = (Graphics2D)g;
         
         //g2d.rotate(90.0, getMousePosition().x, getMousePosition().y);
         
         
         if(g.getColor() != Color.WHITE){
-              int a = getMousePosition().x;
-         //Bresenham_Line(x1+getMousePosition().x, y1+getMousePosition().y, x2+getX(), y2+getY());
-         Bresenham_Line(Math.abs(getMousePosition().x-x1)+getMousePosition().x, Math.abs(getMousePosition().y-y1), Math.abs(getMousePosition().x-x2), Math.abs(getMousePosition().y-y2));
-            System.out.println(a+" "+x1+"    "+(a-x1));
+              int a = Math.abs(getMousePosition().x)-x1;
+              int b = Math.abs(getMousePosition().y)-x1;
+              
         
+         Bresenham_Line(getMousePosition().x-x1+getMousePosition().x, getMousePosition().y-y1+getMousePosition().y, getMousePosition().x-x2+getMousePosition().x, getMousePosition().y-y2+getMousePosition().y);
+           // System.out.println(a+" "+x1+"    b "+b+"   "+y1);
+        
+        }*/
+       
+    }//GEN-LAST:event_Painel_drawMouseDragged
+int inix, iniy, finx, finy;
+    private void btn_desfazer_retaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desfazer_retaActionPerformed
+        // TODO add your handling code here:
+        
+        //pega o tamanho dos arrays 
+        int size_pontos = pontos.size()-1; //array que guarda os pontos
+        int size_rouc = rouc.size()-1;  //array que guarda se foi criado uma reta ou circunferencia
+        Color temp_color = cor; //guarda cor escolhida para desenhar
+      
+        
+            //colore de branco os pontos vermelhos de onde foi clicado
+            Graphics g = super.getGraphics();
+            g.setColor(Color.WHITE);
+            g.drawOval(pontos.get(size_pontos-3), pontos.get(size_pontos-2), 5, 5);
+            g.fillOval(pontos.get(size_pontos-3), pontos.get(size_pontos-2), 5, 5);
+
+            g.drawOval(pontos.get(size_pontos-1), pontos.get(size_pontos), 5, 5);
+            g.fillOval(pontos.get(size_pontos-1), pontos.get(size_pontos), 5, 5);
+        
+        
+        cor = Color.WHITE; //troca momentaneamente a cor para desenhar de branco por cima
+        
+        
+        //verifica se a remocao e de reta ou aresta, e apos identificado, desenha por cima de branco
+        if(rouc.get(size_rouc)==1){
+             Bresenham_Line(pontos.get(size_pontos-3), pontos.get(size_pontos-2), pontos.get(size_pontos-1), pontos.get(size_pontos));
+             
+             
+        }else{
+              Bresenham_circle(pontos.get(size_pontos-3), pontos.get(size_pontos-2), pontos.get(size_pontos-1), pontos.get(size_pontos));
+            }
+        
+        //remove os pontos que foram usados para desenhar
+        pontos.remove(size_pontos);
+        pontos.remove(size_pontos-1);
+        pontos.remove(size_pontos-2);
+        pontos.remove(size_pontos-3);
+        
+        //remove da lista a indicação de reta/circunferencia
+        rouc.remove(size_rouc);
+        
+        //volta a cor previamente escolhida
+        cor = temp_color;
+        
+       
+        
+    }//GEN-LAST:event_btn_desfazer_retaActionPerformed
+
+    private void Painel_drawMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMousePressed
+        // TODO add your handling code here:
+        inix = getMousePosition().x;
+        iniy = getMousePosition().y;
+    }//GEN-LAST:event_Painel_drawMousePressed
+
+    private void Painel_drawMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseReleased
+        // TODO add your handling code here:
+       
+       
+        finx = getMousePosition().x;
+        finy = getMousePosition().y;
+        
+        Graphics g = super.getGraphics();
+        g.setColor(Color.GRAY);
+        
+        //cria retangulo pra selecionar os pontos da reta/circunferencia
+        int xmin = Math.min(inix,finx);
+        int xmax = Math.max(inix,finx);
+        int ymin = Math.min(iniy,finy);
+        int ymax = Math.max(iniy,finy);
+        int largura = Math.abs(inix-finx);
+        int altura = Math.abs(iniy-finy);
+            
+        g.drawRect(xmin, ymin, largura, altura);
+        
+         
+        g.setColor(Color.WHITE);
+        
+        //espera um pouco
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Graphic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //"deleta" triangulo criado
+         g.drawRect(xmin, ymin, largura, altura);
+        
+         
+         
+         
+        int x1selected, y1selected, x2selected, y2selected; 
+        
+        //ve se ospontos estao dentro do triangulo
+        for(int i = 0; i < pontos.size()-1; i++){
+       
+            if((xmin <= pontos.get(i) && pontos.get(i) <= xmax && ymin <= pontos.get(i+1) && pontos.get(i+1) <= ymax)&&(xmin <= pontos.get(i+2) && pontos.get(i+2) <= xmax && ymin <= pontos.get(i+3) && pontos.get(i+3) <= ymax)){
+                  
+                //caso tiver, seleciona os pontos
+                  
+                g.setColor(Color.MAGENTA);
+                g.drawOval(pontos.get(i), pontos.get(i+1), 5, 5);
+                g.fillOval(pontos.get(i), pontos.get(i+1), 5, 5);
+                g.drawOval(pontos.get(i+2), pontos.get(i+3), 5, 5);
+                g.fillOval(pontos.get(i+2), pontos.get(i+3), 5, 5);
+                
+                x1selected = pontos.get(i);
+                y1selected = pontos.get(i+1);
+                
+                x2selected = pontos.get(i+2);
+                y2selected = pontos.get(i+3);
+               //   System.out.println("ccc");
+               i = pontos.size()-1;
+            }
+            i+=3;
         }
         
-    }//GEN-LAST:event_Painel_drawMouseDragged
-
-    private void Painel_drawMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseExited
-        // TODO add your handling code here:
-         
-    }//GEN-LAST:event_Painel_drawMouseExited
+       //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
+      if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
+      
+          
+          System.err.println("aaaaaaaaaaaaaaaaaaaaeeeeeeerrr");
+      
+      }
+        
+    }//GEN-LAST:event_Painel_drawMouseReleased
 
     
     
@@ -364,9 +511,11 @@ public class Graphic extends javax.swing.JFrame {
     }
     
     
-    //array para armazenar os pontos na criação da reta
-    ArrayList<Integer> pontos_reta = new ArrayList<>();
-    ArrayList<Integer> pontos_Circulo = new ArrayList<>();
+    //array para armazenar os pontos da criação 
+    ArrayList<Integer> pontos = new ArrayList<>();
+    //reta ou circunferencia
+    ArrayList<Integer> rouc = new ArrayList<>();
+    
     
     public void desfaz_reta(int x1, int y1, int x2, int y2){
     
