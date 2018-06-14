@@ -374,6 +374,7 @@ int inix, iniy, finx, finy;
             i+=3;
         }
         
+        
        //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
       if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
       
