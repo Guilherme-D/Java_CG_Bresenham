@@ -40,6 +40,7 @@ public class Graphic extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         Painel_draw = new javax.swing.JPanel();
         Color_btn = new javax.swing.JButton();
         Selected_color = new javax.swing.JPanel();
@@ -47,6 +48,13 @@ public class Graphic extends javax.swing.JFrame {
         Circunferencia = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         btn_desfazer_reta = new javax.swing.JButton();
+        up_btn = new javax.swing.JButton();
+        down_btn = new javax.swing.JButton();
+        rgt_btn = new javax.swing.JButton();
+        lft_btn = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bresenham");
@@ -119,6 +127,25 @@ public class Graphic extends javax.swing.JFrame {
             }
         });
 
+        up_btn.setText("^");
+        up_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                up_btnActionPerformed(evt);
+            }
+        });
+
+        down_btn.setText("v");
+
+        rgt_btn.setText(">");
+
+        lft_btn.setText("<");
+
+        buttonGroup2.add(jRadioButton1);
+        jRadioButton1.setText("Transladar");
+
+        buttonGroup2.add(jRadioButton2);
+        jRadioButton2.setText("Rotacionar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,8 +162,21 @@ public class Graphic extends javax.swing.JFrame {
                             .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Color_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Selected_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(Selected_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lft_btn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField1)
+                                    .addComponent(down_btn))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rgt_btn))
+                            .addComponent(up_btn)))
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +193,20 @@ public class Graphic extends javax.swing.JFrame {
                 .addComponent(Circunferencia)
                 .addGap(29, 29, 29)
                 .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addGap(87, 87, 87)
+                .addComponent(jRadioButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton2)
+                .addGap(38, 38, 38)
+                .addComponent(up_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rgt_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lft_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(down_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(176, Short.MAX_VALUE))
             .addComponent(Painel_draw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -349,7 +402,7 @@ int inix, iniy, finx, finy;
     private void Painel_drawMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseReleased
         // TODO add your handling code here:
        
-       
+  /*     
         finx = getMousePosition().x;
         finy = getMousePosition().y;
         
@@ -406,7 +459,7 @@ int inix, iniy, finx, finy;
             }
             i+=3;
         }
-        
+    */    
       /*  
        //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
       if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
@@ -417,6 +470,12 @@ int inix, iniy, finx, finy;
       }*/
         
     }//GEN-LAST:event_Painel_drawMouseReleased
+
+    private void up_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_up_btnActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_up_btnActionPerformed
 
     
     
@@ -608,6 +667,14 @@ int inix, iniy, finx, finy;
     private javax.swing.JPanel Selected_color;
     private javax.swing.JButton btn_desfazer_reta;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton down_btn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton lft_btn;
+    private javax.swing.JButton rgt_btn;
+    private javax.swing.JButton up_btn;
     // End of variables declaration//GEN-END:variables
 }
