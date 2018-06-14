@@ -52,7 +52,7 @@ public class Graphic extends javax.swing.JFrame {
         down_btn = new javax.swing.JButton();
         rgt_btn = new javax.swing.JButton();
         lft_btn = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        transrot_value = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
 
@@ -137,6 +137,11 @@ public class Graphic extends javax.swing.JFrame {
         down_btn.setText("v");
 
         rgt_btn.setText(">");
+        rgt_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rgt_btnActionPerformed(evt);
+            }
+        });
 
         lft_btn.setText("<");
 
@@ -169,7 +174,7 @@ public class Graphic extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
+                                    .addComponent(transrot_value)
                                     .addComponent(down_btn))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rgt_btn))
@@ -203,7 +208,7 @@ public class Graphic extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rgt_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lft_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(transrot_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(down_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(176, Short.MAX_VALUE))
@@ -256,6 +261,7 @@ public class Graphic extends javax.swing.JFrame {
                     pontos.add(y2);
                     rouc.add(1);
                     arr_cor.add(cor);
+                    is_trans_rot.add(0);
                 }else{
                  Bresenham_circle(x1, y1, x2, y2);  
                     pontos.add(x1);
@@ -264,6 +270,7 @@ public class Graphic extends javax.swing.JFrame {
                     pontos.add(y2);
                     rouc.add(2);
                     arr_cor.add(cor);
+                    is_trans_rot.add(0);
                 }
             }
             
@@ -301,7 +308,7 @@ public class Graphic extends javax.swing.JFrame {
         Graphics2D g2d = (Graphics2D)g;
         
         //g2d.rotate(90.0, getMousePosition().x, getMousePosition().y);
-        
+        /*
         
         if(g.getColor() != Color.WHITE){
               int a = Math.abs((getMousePosition().x)+x1selected);
@@ -314,7 +321,7 @@ public class Graphic extends javax.swing.JFrame {
             System.out.println(a+" "+x1selected+"    b "+b+"   "+y1selected);
         
         }
-       
+       */
     }//GEN-LAST:event_Painel_drawMouseDragged
 int inix, iniy, finx, finy;
     private void btn_desfazer_retaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desfazer_retaActionPerformed
@@ -359,6 +366,13 @@ int inix, iniy, finx, finy;
         //remove da lista a indicação de reta/circunferencia
         rouc.remove(size_rouc);
         
+        x1selected += is_trans_rot.get(is_trans_rot.size()-1);
+                //y1selected += Integer.parseInt(transrot_value.getText());
+                x2selected += is_trans_rot.get(is_trans_rot.size()-1);
+               // y2selected += Integer.parseInt(transrot_value.getText());
+        
+        is_trans_rot.remove(is_trans_rot.size()-1);
+        
         re_draw();
         //volta a cor previamente escolhida
         cor = temp_color;
@@ -369,23 +383,54 @@ int inix, iniy, finx, finy;
 
     
     public void re_draw(){
-    
-         /*Graphics g = super.getGraphics();
-            g.setColor(Color.RED);
-            cor = Color.RED;
-           */
-         
-            int cont = 0;
-            
+        
+        int cont = 0;
+           
+        //percorre o array que indica se é uma reta ou circunferencia
+        //dependendo do que for, redesenha a reta/circunferencia
         for(int i = 0; i <  rouc.size(); i++){
             
             if(rouc.get(i)==1){
-                cor = arr_cor.get(i);
-                Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                
+                //pega a cor que foi desenhada originalmete para redesenhar
+               cor = arr_cor.get(i);
+               
+               //muda o valor de rotação do array para indicar que é a ultima das rotações
+               is_trans_rot.set(is_trans_rot.size()-1, 0);
+               
+                //so vai redesenhar o que nao for indicado como translação/rotação
+                if(is_trans_rot.get(i) == 0){
+                     Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    /*if(is_reta){
+                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }else{
+                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }
+                    */
+                }
+                
                 
             }else{
-                cor = arr_cor.get(i);
-                Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                 //pega a cor que foi desenhada originalmete para redesenhar
+               cor = arr_cor.get(i);
+               
+               //muda o valor de rotação do array para indicar que é a ultima das rotações
+               is_trans_rot.set(is_trans_rot.size()-1, 0);
+               
+               if(is_trans_rot.get(i) == 0){
+                   
+                   Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                   /* 
+                    if(is_reta){
+                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }else{
+                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }
+                   */
+                    
+                }
+               
+               //Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
             }
             cont += 4;
         }
@@ -399,10 +444,11 @@ int inix, iniy, finx, finy;
         iniy = getMousePosition().y;
     }//GEN-LAST:event_Painel_drawMousePressed
  int x1selected = 0, y1selected = 0, x2selected = 0, y2selected = 0; 
+ int xo,yo, x1o, y1o;
     private void Painel_drawMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseReleased
         // TODO add your handling code here:
        
-  /*     
+       is_reta = true;
         finx = getMousePosition().x;
         finy = getMousePosition().y;
         
@@ -433,8 +479,8 @@ int inix, iniy, finx, finy;
          
          
          
-        
-        //ve se ospontos estao dentro do triangulo
+        int cont = 0;
+        //ve se ospontos estao dentro do retangulo
         for(int i = 0; i < pontos.size()-1; i++){
        
             if((xmin <= pontos.get(i) && pontos.get(i) <= xmax && ymin <= pontos.get(i+1) && pontos.get(i+1) <= ymax)&&(xmin <= pontos.get(i+2) && pontos.get(i+2) <= xmax && ymin <= pontos.get(i+3) && pontos.get(i+3) <= ymax)){
@@ -454,12 +500,35 @@ int inix, iniy, finx, finy;
                 
                 x2selected = pontos.get(i+2);
                 y2selected = pontos.get(i+3);
+                
+                
+                
+                //percorre o array de pontos para saber a posição dos pontos selecionados
+                //e saber se os pontos sao de reta ou circunferencia
+                for(int j = 0; i < pontos.size()-1; j++){
+                
+                    if(x1selected == pontos.get(j)){
+                        //caso encontre o ponto, o valor do array responsavel por saber se 
+                        //aquela reta/circunferencia é fruto de uma translação/rotação
+                        //recebe valor 1 (arbitrario) para indicar que uma mudança ocorreu
+                        is_trans_rot.set(j, 1);
+                        
+                        if(rouc.get(cont)==2){
+                            is_reta = false;
+                            
+                        }
+                    }
+                    cont += 4;
+                }
                
                i = pontos.size()-1;
             }
             i+=3;
         }
-    */    
+        
+       
+        re_draw();
+       
       /*  
        //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
       if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
@@ -470,12 +539,70 @@ int inix, iniy, finx, finy;
       }*/
         
     }//GEN-LAST:event_Painel_drawMouseReleased
-
+ boolean is_reta = true;
     private void up_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_up_btnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_up_btnActionPerformed
+
+    private void rgt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgt_btnActionPerformed
         // TODO add your handling code here:
         
         
-    }//GEN-LAST:event_up_btnActionPerformed
+        Color temp = cor;
+        cor = Color.WHITE;
+        /*Graphics g = super.getGraphics();
+        g.setColor(Color.BLUE);*/
+        
+      
+        
+                 if(is_reta){
+                    rouc.add(1);
+                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    rouc.add(2);
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+                }
+                
+
+                
+                
+                x1selected += Integer.parseInt(transrot_value.getText());
+                //y1selected += Integer.parseInt(transrot_value.getText());
+                x2selected += Integer.parseInt(transrot_value.getText());
+               // y2selected += Integer.parseInt(transrot_value.getText());
+                
+                pontos.add(x1selected);
+                pontos.add(y1selected);
+                pontos.add(x2selected);
+                pontos.add(y2selected);
+                
+               
+                
+                
+                arr_cor.add(temp);
+                is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+                System.out.println("ssssssssssss");
+                
+                
+                cor = temp;
+               // g.setColor(Color.WHITE);
+                if(is_reta){
+                    rouc.add(1);
+                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    rouc.add(2);
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+                }
+                
+              //i = pontos.size();
+
+        
+    }//GEN-LAST:event_rgt_btnActionPerformed
 
     
     
@@ -611,14 +738,10 @@ int inix, iniy, finx, finy;
     //array de cores
     ArrayList<Color> arr_cor = new ArrayList<>();
     
+   //pontos translações e rotações
+    ArrayList<Integer> is_trans_rot = new ArrayList<Integer>();
     
-    public void desfaz_reta(int x1, int y1, int x2, int y2){
-    
-        
-        
-    }
-    
-    
+ 
     /**
      * @param args the command line arguments
      */
@@ -672,9 +795,9 @@ int inix, iniy, finx, finy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton lft_btn;
     private javax.swing.JButton rgt_btn;
+    private javax.swing.JTextField transrot_value;
     private javax.swing.JButton up_btn;
     // End of variables declaration//GEN-END:variables
 }

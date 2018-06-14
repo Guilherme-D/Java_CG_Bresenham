@@ -54,7 +54,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jTextField1" max="32767" attributes="0"/>
+                                  <Component id="transrot_value" max="32767" attributes="0"/>
                                   <Component id="down_btn" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -96,7 +96,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="rgt_btn" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                   <Component id="lft_btn" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="transrot_value" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="down_btn" min="-2" pref="34" max="-2" attributes="0"/>
@@ -218,13 +218,16 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rgt_btnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="lft_btn">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="transrot_value">
     </Component>
     <Component class="javax.swing.JRadioButton" name="jRadioButton1">
       <Properties>
