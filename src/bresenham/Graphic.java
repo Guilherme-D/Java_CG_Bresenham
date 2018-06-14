@@ -362,6 +362,8 @@ int inix, iniy, finx, finy;
                 g.fillOval(pontos.get(i), pontos.get(i+1), 5, 5);
                 g.drawOval(pontos.get(i+2), pontos.get(i+3), 5, 5);
                 g.fillOval(pontos.get(i+2), pontos.get(i+3), 5, 5);
+               
+                
                 
                 x1selected = pontos.get(i);
                 y1selected = pontos.get(i+1);
