@@ -202,6 +202,7 @@ public class Graphic extends javax.swing.JFrame {
                     pontos.add(x2);
                     pontos.add(y2);
                     rouc.add(1);
+                    arr_cor.add(cor);
                 }else{
                  Bresenham_circle(x1, y1, x2, y2);  
                     pontos.add(x1);
@@ -209,6 +210,7 @@ public class Graphic extends javax.swing.JFrame {
                     pontos.add(x2);
                     pontos.add(y2);
                     rouc.add(2);
+                    arr_cor.add(cor);
                 }
             }
             
@@ -243,20 +245,22 @@ public class Graphic extends javax.swing.JFrame {
     private void Painel_drawMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseDragged
         // TODO add your handling code here:
         Graphics g = super.getGraphics();
-       /* Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g;
         
         //g2d.rotate(90.0, getMousePosition().x, getMousePosition().y);
         
         
         if(g.getColor() != Color.WHITE){
-              int a = Math.abs(getMousePosition().x)-x1;
-              int b = Math.abs(getMousePosition().y)-x1;
+              int a = Math.abs((getMousePosition().x)+x1selected);
+              int b = Math.abs((getMousePosition().y)+y1selected);
+              int c = Math.abs((getMousePosition().x)+x2selected);
+              int d = Math.abs((getMousePosition().y)+y2selected);
               
+              Bresenham_Line(x1selected+getMousePosition().x, y1selected+getMousePosition().y, x2selected+getMousePosition().x, y2selected+getMousePosition().y);
+         //Bresenham_Line(getMousePosition().x-x1+getMousePosition().x, getMousePosition().y-y1+getMousePosition().y, getMousePosition().x-x2+getMousePosition().x, getMousePosition().y-y2+getMousePosition().y);
+            System.out.println(a+" "+x1selected+"    b "+b+"   "+y1selected);
         
-         Bresenham_Line(getMousePosition().x-x1+getMousePosition().x, getMousePosition().y-y1+getMousePosition().y, getMousePosition().x-x2+getMousePosition().x, getMousePosition().y-y2+getMousePosition().y);
-           // System.out.println(a+" "+x1+"    b "+b+"   "+y1);
-        
-        }*/
+        }
        
     }//GEN-LAST:event_Painel_drawMouseDragged
 int inix, iniy, finx, finy;
@@ -291,6 +295,8 @@ int inix, iniy, finx, finy;
               Bresenham_circle(pontos.get(size_pontos-3), pontos.get(size_pontos-2), pontos.get(size_pontos-1), pontos.get(size_pontos));
             }
         
+        
+        
         //remove os pontos que foram usados para desenhar
         pontos.remove(size_pontos);
         pontos.remove(size_pontos-1);
@@ -300,6 +306,7 @@ int inix, iniy, finx, finy;
         //remove da lista a indicação de reta/circunferencia
         rouc.remove(size_rouc);
         
+        re_draw();
         //volta a cor previamente escolhida
         cor = temp_color;
         
@@ -307,12 +314,38 @@ int inix, iniy, finx, finy;
         
     }//GEN-LAST:event_btn_desfazer_retaActionPerformed
 
+    
+    public void re_draw(){
+    
+         /*Graphics g = super.getGraphics();
+            g.setColor(Color.RED);
+            cor = Color.RED;
+           */
+         
+            int cont = 0;
+            
+        for(int i = 0; i <  rouc.size(); i++){
+            
+            if(rouc.get(i)==1){
+                cor = arr_cor.get(i);
+                Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                
+            }else{
+                cor = arr_cor.get(i);
+                Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+            }
+            cont += 4;
+        }
+    
+    }
+    
+    
     private void Painel_drawMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMousePressed
         // TODO add your handling code here:
         inix = getMousePosition().x;
         iniy = getMousePosition().y;
     }//GEN-LAST:event_Painel_drawMousePressed
-
+ int x1selected = 0, y1selected = 0, x2selected = 0, y2selected = 0; 
     private void Painel_drawMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseReleased
         // TODO add your handling code here:
        
@@ -344,11 +377,9 @@ int inix, iniy, finx, finy;
         }
         //"deleta" triangulo criado
          g.drawRect(xmin, ymin, largura, altura);
-        
          
          
          
-        int x1selected, y1selected, x2selected, y2selected; 
         
         //ve se ospontos estao dentro do triangulo
         for(int i = 0; i < pontos.size()-1; i++){
@@ -370,20 +401,20 @@ int inix, iniy, finx, finy;
                 
                 x2selected = pontos.get(i+2);
                 y2selected = pontos.get(i+3);
-               //   System.out.println("ccc");
+               
                i = pontos.size()-1;
             }
             i+=3;
         }
         
-        
+      /*  
        //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
       if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
       
-          
-          System.err.println("aaaaaaaaaaaaaaaaaaaaeeeeeeerrr");
+          Bresenham_Line(x1selected+(getMousePosition().x), y1selected+(getMousePosition().y), x2selected+(getMousePosition().x), y2selected+(getMousePosition().y));
+          System.err.println("aaaaaaaaaaaaaaaaaaaaeeeeeeerrr"+(finx-inix));
       
-      }
+      }*/
         
     }//GEN-LAST:event_Painel_drawMouseReleased
 
@@ -518,6 +549,8 @@ int inix, iniy, finx, finy;
     ArrayList<Integer> pontos = new ArrayList<>();
     //reta ou circunferencia
     ArrayList<Integer> rouc = new ArrayList<>();
+    //array de cores
+    ArrayList<Color> arr_cor = new ArrayList<>();
     
     
     public void desfaz_reta(int x1, int y1, int x2, int y2){
