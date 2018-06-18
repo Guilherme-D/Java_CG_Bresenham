@@ -250,7 +250,7 @@ public class Graphic extends javax.swing.JFrame {
     private void Painel_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseClicked
         // TODO add your handling code here:
         
-        
+        System.err.println(cor);
         Graphics g = super.getGraphics();
         
                 
@@ -282,6 +282,8 @@ public class Graphic extends javax.swing.JFrame {
                 cont_click = 0;
                 
                 if(Reta.isSelected()){
+                    
+                    
                     Bresenham_Line(x1, y1, x2, y2);
                     pontos.add(x1);
                     pontos.add(y1);
@@ -328,6 +330,7 @@ public class Graphic extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         JColorChooser jcc = new JColorChooser();
+        cor = Color.BLACK;
         cor = jcc.showDialog(null, "Selecione uma cor", Color.RED);
         
         Selected_color.setBackground(cor);
