@@ -243,6 +243,7 @@ public class Graphic extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    //x1, x2, y1, y2 -> posição dos pontos escolhidos
          int x1, x2, y1, y2;
         /**
          * pega dois pontos distintos para traçar reta ou circulo
@@ -251,16 +252,12 @@ public class Graphic extends javax.swing.JFrame {
         * @param Reta : jRadioButton
         * @param Circunerencia : JRadioButton
      */
-    //x1, x2, y1, y2 -> posição dos pontos escolhidos
 
     
     private void Painel_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseClicked
         // TODO add your handling code here:
         
-        System.err.println(cor);
         Graphics g = super.getGraphics();
-        
-                
                
         if(evt.getButton() == evt.BUTTON1){
                        
@@ -302,8 +299,8 @@ public class Graphic extends javax.swing.JFrame {
                     is_trans_rot.add(0);
                    
 
-                    System.out.println("x1 "+x1+" y1: "+y1);
-                    System.out.println("x2 "+x2+" y2: "+y2);
+                   // System.out.println("x1 "+x1+" y1: "+y1);
+                    //System.out.println("x2 "+x2+" y2: "+y2);
                 }else{
                  Bresenham_circle(x1, y1, x2, y2);  
                     pontos.add(x1);
@@ -316,25 +313,13 @@ public class Graphic extends javax.swing.JFrame {
                 }
             }
             
-        }else if(evt.getButton() == evt.BUTTON3){
-        
-           if(g.getColor() != Color.WHITE){
-               int a = getMousePosition().x;
-               int b = getMousePosition().y;
-                
-                g.drawOval(getMousePosition().x, getMousePosition().y, 6, 6);
-               if(pontos.contains(a)){
-                    System.out.println(a+" "+b);
-               }
-           }
-            System.out.println("aa");
         }
         
         
        
     }//GEN-LAST:event_Painel_drawMouseClicked
 
-            /**
+    /*
        *painel de dialogo de cores.
        * 
        * <p>Apenas para seleçao de cores
@@ -356,7 +341,7 @@ public class Graphic extends javax.swing.JFrame {
 int inix, iniy, finx, finy;
     private void btn_desfazer_retaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desfazer_retaActionPerformed
         // TODO add your handling code here:
-        //cor.
+        
         //pega o tamanho dos arrays 
         int size_pontos = pontos.size()-1; //array que guarda os pontos
         int size_rouc = rouc.size()-1;  //array que guarda se foi criado uma reta ou circunferencia
@@ -436,12 +421,7 @@ int inix, iniy, finx, finy;
                 //so vai redesenhar o que nao for indicado como translação/rotação
                 if(is_trans_rot.get(i) == 0){
                      Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                    /*if(is_reta){
-                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                    }else{
-                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                    }
-                    */
+                    
                 }
                 
                 
@@ -455,13 +435,6 @@ int inix, iniy, finx, finy;
                if(is_trans_rot.get(i) == 0){
                    
                    Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                   /* 
-                    if(is_reta){
-                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                    }else{
-                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
-                    }
-                   */
                     
                 }
                
@@ -487,8 +460,10 @@ int inix, iniy, finx, finy;
         finx = getMousePosition().x;
         finy = getMousePosition().y;
         
+        Color transp = new Color(0,0,0,0);
+        
         Graphics g = super.getGraphics();
-        g.setColor(Color.GRAY);
+        g.setColor(transp);
         
         //cria retangulo pra selecionar os pontos da reta/circunferencia
         int xmin = Math.min(inix,finx);
@@ -501,7 +476,7 @@ int inix, iniy, finx, finy;
         g.drawRect(xmin, ymin, largura, altura);
         
          
-        g.setColor(Color.WHITE);
+       // g.setColor(Color.WHITE);
         
         //espera um pouco
         try {
@@ -510,7 +485,7 @@ int inix, iniy, finx, finy;
             Logger.getLogger(Graphic.class.getName()).log(Level.SEVERE, null, ex);
         }
         //"deleta" triangulo criado
-         g.drawRect(xmin, ymin, largura, altura);
+        // g.drawRect(xmin, ymin, largura, altura);
          
          
          
@@ -569,17 +544,6 @@ int inix, iniy, finx, finy;
                 is_reta = false;
             }
         }
-       
-        re_draw();
-       
-      /*  
-       //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
-      if((xmin <= getMousePosition().x && getMousePosition().x <= xmax && ymin <= getMousePosition().y && getMousePosition().y <= ymax)){
-      
-          Bresenham_Line(x1selected+(getMousePosition().x), y1selected+(getMousePosition().y), x2selected+(getMousePosition().x), y2selected+(getMousePosition().y));
-          System.err.println("aaaaaaaaaaaaaaaaaaaaeeeeeeerrr"+(finx-inix));
-      
-      }*/
         
     }//GEN-LAST:event_Painel_drawMouseReleased
  boolean is_reta = true;
@@ -809,7 +773,7 @@ int inix, iniy, finx, finy;
         }
         for(int i=0;i<arr_cor.size();i++)
         {
-        System.out.println(""+arr_cor.get(i));
+        //System.out.println(""+arr_cor.get(i));
         }
     }//GEN-LAST:event_AntialiasingActionPerformed
 
@@ -1219,7 +1183,7 @@ int inix, iniy, finx, finy;
     public void plota(int x,int y){
             
         Graphics g = super.getGraphics();
-        System.out.println("----------------------"+cor);
+        //System.out.println("----------------------"+cor);
         g.setColor(cor);
         g.drawOval(x, y, 2, 2);
         g.fillOval(x, y, 2, 2);
