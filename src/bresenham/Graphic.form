@@ -65,6 +65,7 @@
                   </Group>
                   <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
                   <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="Antialiasing" min="-2" pref="138" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
@@ -86,7 +87,9 @@
               <Component id="Circunferencia" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="btn_desfazer_reta" min="-2" pref="42" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="Antialiasing" min="-2" pref="41" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
@@ -120,9 +123,9 @@
       </Properties>
       <Events>
         <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="Painel_drawMouseDragged"/>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Painel_drawMouseClicked"/>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Painel_drawMousePressed"/>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Painel_drawMouseReleased"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Painel_drawMouseClicked"/>
       </Events>
 
       <Layout>
@@ -244,6 +247,15 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Rotacionar"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="Antialiasing">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Anti Aliasing"/>
+        <Property name="actionCommand" type="java.lang.String" value="Antialiasing"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AntialiasingActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

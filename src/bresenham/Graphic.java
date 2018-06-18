@@ -5,10 +5,11 @@
  */
 package bresenham;
 
-import com.sun.prism.shader.DrawCircle_Color_Loader;
+//import com.sun.prism.shader.DrawCircle_Color_Loader;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.sql.JDBCType;
 import java.sql.Time;
@@ -55,6 +56,7 @@ public class Graphic extends javax.swing.JFrame {
         transrot_value = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        Antialiasing = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bresenham");
@@ -151,6 +153,14 @@ public class Graphic extends javax.swing.JFrame {
         buttonGroup2.add(jRadioButton2);
         jRadioButton2.setText("Rotacionar");
 
+        Antialiasing.setText("Anti Aliasing");
+        Antialiasing.setActionCommand("Antialiasing");
+        Antialiasing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AntialiasingActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,7 +190,8 @@ public class Graphic extends javax.swing.JFrame {
                                 .addComponent(rgt_btn))
                             .addComponent(up_btn)))
                     .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(jRadioButton2)
+                    .addComponent(Antialiasing, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -198,7 +209,9 @@ public class Graphic extends javax.swing.JFrame {
                 .addComponent(Circunferencia)
                 .addGap(29, 29, 29)
                 .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
+                .addGap(18, 18, 18)
+                .addComponent(Antialiasing, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addComponent(jRadioButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jRadioButton2)
@@ -262,6 +275,10 @@ public class Graphic extends javax.swing.JFrame {
                     rouc.add(1);
                     arr_cor.add(cor);
                     is_trans_rot.add(0);
+                   
+
+                    System.out.println("x1 "+x1+" y1: "+y1);
+                    System.out.println("x2 "+x2+" y2: "+y2);
                 }else{
                  Bresenham_circle(x1, y1, x2, y2);  
                     pontos.add(x1);
@@ -604,14 +621,96 @@ int inix, iniy, finx, finy;
         
     }//GEN-LAST:event_rgt_btnActionPerformed
 
+    private void AntialiasingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AntialiasingActionPerformed
+        // TODO add your handling code here:
+
+        //seleciona cor branca
+        Color temp= cor;
+        temp =Color.WHITE;
+
+        
+        //pegas as dimensoes da tela desenhada
+        int height=java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+        int width=java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        
+        //multiplica por 3 a  altura e a largura por 3
+        height = height*3;
+        width= width*3;
+        
+        //criar uma matrix de cores 3x maior do que a area original de desenho
+        Color[][] color = new Color[height][width];
+        for(int i=0;i<height;i++)
+        {//System.out.println(i);
+            for(int j=0;j<width;j++)
+            {   
+                //preenche dessa matrix de cores com a cor branca
+                color[i][j]=temp;
+            }
+        }
+        
+        
+        //versao adaptada do metodo redraw para desenhar na matrix gigante
+         int cont = 0;
+           
+        //percorre o array que indica se é uma reta ou circunferencia
+        //dependendo do que for, redesenha a reta/circunferencia
+        for(int i = 0; i <  rouc.size(); i++){
+            
+            if(rouc.get(i)==1){
+                
+
+               //muda o valor de rotação do array para indicar que é a ultima das rotações
+               is_trans_rot.set(is_trans_rot.size()-1, 0);
+               
+                //so vai redesenhar o que nao for indicado como translação/rotação
+                if(is_trans_rot.get(i) == 0){
+                     SSAABresenham_Line(color,pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3),arr_cor.get(i));
+                    /*if(is_reta){
+                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }else{
+                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }
+                    */
+                }
+                
+                
+            }else{
+
+               
+               //muda o valor de rotação do array para indicar que é a ultima das rotações
+               is_trans_rot.set(is_trans_rot.size()-1, 0);
+               
+               if(is_trans_rot.get(i) == 0){
+                   
+                   SSAABresenham_circle(color,pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3),arr_cor.get(i));
+                   /* 
+                    if(is_reta){
+                        Bresenham_Line(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }else{
+                        Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+                    }
+                   */
+                    
+                }
+               
+               //Bresenham_circle(pontos.get(cont), pontos.get(cont+1), pontos.get(cont+2), pontos.get(cont+3));
+            }
+            cont += 4;
+        }
+        for(int i=0;i<arr_cor.size();i++)
+        {
+        System.out.println(""+arr_cor.get(i));
+        }
+    }//GEN-LAST:event_AntialiasingActionPerformed
+        
+    
     
     
      private void Bresenham_circle(int x1, int y1, int x2, int y2){
-     
+         
         //calcula o raio da circunferencia dados os dois pontos
         int raio = (int)Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
         int y = raio;
-        
         
         int x = 0; int p = 3-2*raio;
         
@@ -629,7 +728,58 @@ int inix, iniy, finx, finy;
         }
      
      }
+     private void SSAABresenham_circle(Color c[][],int x1, int y1, int x2, int y2, Color cor){
+        
+        x1=x1*3;
+        y1=y1*3;
+        x2=x2*3;
+        y2=y2*3;
+        
+        //calcula o raio da circunferencia dados os dois pontos
+        int raio = (int)Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
+        int y = raio;
+        
+        int x = 0; int p = 3-2*raio;
+        
+        //plotasimetrica(x,y,x1,y1);
+        //(int a, int b, int xc, int yc)
+        SSAAplota(c,x1+x, y1+y,cor);
+        SSAAplota(c,x1+x, y1-y,cor);
+        SSAAplota(c,x1-x, y1+y,cor);
+        SSAAplota(c,x1-x, y1-y,cor);
+        SSAAplota(c,x1+x, y1+y,cor);
+        SSAAplota(c,x1+x, y1-y,cor);
+        SSAAplota(c,x1-x, y1+y,cor);
+        SSAAplota(c,x1-x, y1-y,cor);
+        
+        
+        
+        while(x<y){
+            if(p < 0){
+                p += 4*x+6;
+            }else{
+                p += 4*(x-y)+10;
+                y--;
+            }
+            x++;
+            //plotasimetrica(x,y,x1,y1);
+        SSAAplota(c,x1+x, y1+y,cor);
+        SSAAplota(c,x1+x, y1-y,cor);
+        SSAAplota(c,x1-x, y1+y,cor);
+        SSAAplota(c,x1-x, y1-y,cor);
+        SSAAplota(c,x1+x, y1+y,cor);
+        SSAAplota(c,x1+x, y1-y,cor);
+        SSAAplota(c,x1-x, y1+y,cor);
+        SSAAplota(c,x1-x, y1-y,cor);
+        
+        }
+     
+     }
     
+     
+
+    
+     
     private void plotasimetrica(int a, int b, int xc, int yc){
     
         plota(xc+a, yc+b);
@@ -647,6 +797,79 @@ int inix, iniy, finx, finy;
     
     //Cont_click -> variavel para saber se foram escolhidos dois pontos
     int cont_click = 0;
+    private void SSAABresenham_Line(Color c[][],int x1, int y1, int x2, int y2, Color cor){
+        x1=x1*3;
+        y1=y1*3;
+        x2=x2*3;
+        y2=y2*3;
+        
+        int xincr, yincr;
+        int x, y, p, c1, c2;
+        
+        int dx = x2-x1, dy = y2-y1;
+       
+        if(dx < 0){
+            xincr = -1;
+            dx = -dx;
+        }else{
+            xincr = 1;
+        }
+        
+        
+        if(dy < 0){
+            yincr = -1;
+            dy = -dy;
+        }else{
+            yincr = 1;
+        }
+    
+        
+        x = x1; y = y1;
+        c[x][y]=cor;
+        //plota(x,y);
+        
+        if(dx > dy){
+            //1º Caso
+            
+            p = 2*dy-dx;
+            c1 = 2*dy;
+            c2 = 2*(dy-dx);
+        
+            
+            for(int i = 0; i < dx; i++){
+                x += xincr;
+                
+                if(p < 0){
+                    p += c1;
+                }else{
+                    p += c2;
+                    y += yincr;
+                }
+                c[x][x]=cor;
+                //  plota(x,y);
+            }
+        }else{
+            //2º caso
+            p = 2*dx-dy;
+            c1 = 2*dx;
+            c2 = 2*(dx-dy);
+            
+            for(int i = 0; i < dy; i++){
+                y += yincr;
+                
+                if(p < 0){
+                    p += c1;
+                }else{
+                    p += c2;
+                    x += xincr;
+                }
+                
+                c[x][y]=cor;
+                //plota(x,y);
+            }
+        
+        }
+    }
         
     private void Bresenham_Line(int x1, int y1, int x2, int y2){
         
@@ -730,6 +953,19 @@ int inix, iniy, finx, finy;
         g.fillOval(x, y, 2, 2);
     }
     
+        public void SSAAplota(Color c[][],int x,int y, Color color){
+            //aqui é preciso testar se o ponto está dentro da matriz
+        int altura=c.length;
+        int largura=c[0].length;
+        
+        if(x<altura & y<largura)
+        {
+            c[x][y]=color;
+        }
+            
+            
+        
+    }
     
     //array para armazenar os pontos da criação 
     ArrayList<Integer> pontos = new ArrayList<>();
@@ -783,6 +1019,7 @@ int inix, iniy, finx, finy;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Antialiasing;
     private javax.swing.JRadioButton Circunferencia;
     private javax.swing.JButton Color_btn;
     private javax.swing.JPanel Painel_draw;
