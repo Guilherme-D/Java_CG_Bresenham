@@ -63,8 +63,8 @@
                           <Component id="up_btn" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="transladar_btn" min="-2" max="-2" attributes="0"/>
+                  <Component id="rotacionar_btn" min="-2" max="-2" attributes="0"/>
                   <Component id="Antialiasing" min="-2" pref="138" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="16" max="32767" attributes="0"/>
@@ -90,9 +90,9 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="Antialiasing" min="-2" pref="41" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="transladar_btn" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="rotacionar_btn" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Component id="up_btn" min="-2" pref="34" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -216,6 +216,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="v"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="down_btnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="rgt_btn">
       <Properties>
@@ -229,10 +232,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lft_btnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="transrot_value">
     </Component>
-    <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+    <Component class="javax.swing.JRadioButton" name="transladar_btn">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup2"/>
@@ -240,7 +246,7 @@
         <Property name="text" type="java.lang.String" value="Transladar"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="jRadioButton2">
+    <Component class="javax.swing.JRadioButton" name="rotacionar_btn">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup2"/>
