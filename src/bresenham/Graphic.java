@@ -428,7 +428,7 @@ int inix, iniy, finx, finy;
             if(rouc.get(i)==1){
                 
                 //pega a cor que foi desenhada originalmete para redesenhar
-               cor = arr_cor.get(i);
+              cor = arr_cor.get(i);
                
                //muda o valor de rotação do array para indicar que é a ultima das rotações
                is_trans_rot.set(is_trans_rot.size()-1, 0);
@@ -570,7 +570,7 @@ int inix, iniy, finx, finy;
             }
         }
        
-        re_draw();
+        //re_draw();
        
       /*  
        //se selecionar dentro do triangulo e arrastar, faz a translacao (nao fiz a translação ainda)
@@ -730,7 +730,15 @@ int inix, iniy, finx, finy;
         }
         
     }//GEN-LAST:event_rgt_btnActionPerformed
-
+/**
+ * Anti aliasing utilizando SSAA
+ * 
+ * <p> cria uma matrix 9x maior, onde cada pixel da area utilizada é transformado numa matrix 3x3
+ * em seguida, as estruturas contidas na pilha sao desenhadas.
+ * Entao, uma média de cores de cada parte 3x3 é realizada e essa média é a cor de uma nova matrix com a mesma area do desenho original
+ * em seguida, essa matrix é desenhada ponto a ponto.
+ * @param evt 
+ */
     private void AntialiasingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AntialiasingActionPerformed
         // TODO add your handling code here:
 
@@ -811,8 +819,64 @@ int inix, iniy, finx, finy;
         {
         System.out.println(""+arr_cor.get(i));
         }
+        Color menor[][]=SSAAMedia(color);
+      
+        
+        
     }//GEN-LAST:event_AntialiasingActionPerformed
-
+/**
+ * transforma a matriz grande em uma matriz menor
+ * 
+ * @param c
+ * @return collor[][] ---> matriz menor com a dimensao da area de desenho e prenchida com a media dos pixels
+ */
+        public Color[][] SSAAMedia(Color c[][])
+    {   int altura = c.length;
+        int largura = c[0].length;
+        
+                Color[][] menor = new Color[(altura/3)][(largura/3)];
+                
+                for(int i=0;i<menor.length;i++)
+                {
+                    for(int j=0;j<menor[0].length;j++)
+                    {
+                        menor[i][j]=null;
+                    }
+                }
+                
+                for(int i=0;i<altura-3;i=i+3)
+                {
+                    for(int j=0;j<largura-3;j=j+3)
+                    {Color temp=null;
+                    int r,g,b;
+                    r=0;
+                    g=0;
+                    b=0;
+                    //tira a media dos componentes rgb de cada parte da matriz 9x maior
+                        
+                        r=(c[i][j].getRed()+c[i+1][j].getRed()+c[i+2][j].getRed()+
+                                c[i][j+1].getRed()+c[i+1][j+1].getRed()+c[i+2][j+1].getRed()+
+                                c[i][j+2].getRed()+c[i+1][j+2].getRed()+c[i+2][j+2].getRed())/9;                    
+                        g=(c[i][j].getGreen()+c[i+1][j].getGreen()+c[i+1][j].getGreen()+
+                                c[i][j+1].getGreen()+c[i+1][j+1].getGreen()+c[i+1][j+1].getGreen()+
+                                c[i][j+2].getGreen()+c[i+1][j+2].getGreen()+c[i+1][j+2].getGreen())/9;
+                        b=(c[i][j].getBlue()+c[i+1][j].getBlue()+c[i+2][j].getBlue()+
+                                c[i][j+1].getBlue()+c[i+1][j+1].getBlue()+c[i+2][j+1].getBlue()+
+                                c[i][j+2].getBlue()+c[i+1][j+2].getBlue()+c[i+2][j+2].getBlue())/9;
+                       temp=new Color(r,g,b);
+                      System.out.println(r+" "+g+" "+b);
+//menor[altura/3][largura/3]=temp;
+                        
+                    }
+                }
+        
+                
+                return menor;
+    }
+    
+    
+    
+    
     private void lft_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lft_btnActionPerformed
         // TODO add your handling code here:
          if(transladar_btn.isSelected()){
@@ -864,9 +928,11 @@ int inix, iniy, finx, finy;
         
         } 
                                            
-
+         
     }//GEN-LAST:event_lft_btnActionPerformed
 
+
+    
     private void down_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_down_btnActionPerformed
         // TODO add your handling code here:
          if(transladar_btn.isSelected()){
