@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Guilherme
+ * @author Rama
  */
 public class Graphic extends javax.swing.JFrame {
 
@@ -232,10 +233,16 @@ public class Graphic extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    
-    
+         int x1, x2, y1, y2;
+        /**
+         * pega dois pontos distintos para traçar reta ou circulo
+        *<p> 
+        * @param MouseEvent
+        * @param Reta : jRadioButton
+        * @param Circunerencia : JRadioButton
+     */
     //x1, x2, y1, y2 -> posição dos pontos escolhidos
-     int x1, x2, y1, y2;
+
     
     private void Painel_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseClicked
         // TODO add your handling code here:
@@ -272,6 +279,7 @@ public class Graphic extends javax.swing.JFrame {
                     pontos.add(y1);
                     pontos.add(x2);
                     pontos.add(y2);
+                    System.out.println(cor);
                     rouc.add(1);
                     arr_cor.add(cor);
                     is_trans_rot.add(0);
@@ -309,6 +317,11 @@ public class Graphic extends javax.swing.JFrame {
        
     }//GEN-LAST:event_Painel_drawMouseClicked
 
+            /**
+       *painel de dialogo de cores.
+       * 
+       * <p>Apenas para seleçao de cores
+     */
     private void Color_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Color_btnActionPerformed
         // TODO add your handling code here:
         
@@ -343,7 +356,7 @@ public class Graphic extends javax.swing.JFrame {
 int inix, iniy, finx, finy;
     private void btn_desfazer_retaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desfazer_retaActionPerformed
         // TODO add your handling code here:
-        
+        //cor.
         //pega o tamanho dos arrays 
         int size_pontos = pontos.size()-1; //array que guarda os pontos
         int size_rouc = rouc.size()-1;  //array que guarda se foi criado uma reta ou circunferencia
@@ -397,8 +410,12 @@ int inix, iniy, finx, finy;
        
         
     }//GEN-LAST:event_btn_desfazer_retaActionPerformed
-
-    
+/**
+ * redesenha estruturas na pilha
+ * 
+ * <p> ao desfazer uma reta, é necessário redesenhar as estruturas contidas nas pilhas evitar partes faltantes no desenho
+ * 
+ */
     public void re_draw(){
         
         int cont = 0;
@@ -705,8 +722,18 @@ int inix, iniy, finx, finy;
         
     
     
-    
-     private void Bresenham_circle(int x1, int y1, int x2, int y2){
+    /**
+     *desenha um circulo utilizando bresenham
+     * 
+     * <p> bresenham calcula um oitavo do circulo e depois plota o resto por espelhamento
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * 
+     * 
+     */
+     public void Bresenham_circle(int x1, int y1, int x2, int y2){
          
         //calcula o raio da circunferencia dados os dois pontos
         int raio = (int)Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
@@ -728,6 +755,20 @@ int inix, iniy, finx, finy;
         }
      
      }
+     
+     /**
+      * SSAA é uma implementacao de circulo de bresenham em matriz
+      * 
+      * <p> a area da matriz e 9x maior que a original e por isso é necessario fazer algumas alteracoes, como transladar os pontos pra uma area inicial 3x mais distante em cada eixo coordenado
+      * 
+      * 
+      * @param c 
+      * @param x1
+      * @param y1
+      * @param x2
+      * @param y2
+      * @param cor 
+      */
      private void SSAABresenham_circle(Color c[][],int x1, int y1, int x2, int y2, Color cor){
         
         x1=x1*3;
@@ -779,8 +820,17 @@ int inix, iniy, finx, finy;
      
 
     
-     
-    private void plotasimetrica(int a, int b, int xc, int yc){
+    /**
+     * Plota circulo usando segmentos.
+     * 
+     * <p> esse metodo utiliza do fato dos circulos terem extremidades espelhadas para plotar
+     * 
+     * @param a
+     * @param b
+     * @param xc
+     * @param yc 
+     */ 
+    public void plotasimetrica(int a, int b, int xc, int yc){
     
         plota(xc+a, yc+b);
         plota(xc+a, yc-b);
@@ -797,6 +847,17 @@ int inix, iniy, finx, finy;
     
     //Cont_click -> variavel para saber se foram escolhidos dois pontos
     int cont_click = 0;
+    /**
+     * Reta utilizando bresenham em uma matrix
+     * 
+     * <p> matrix c é 9x maior, para fins de antialiasing
+     * @param c
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param cor 
+     */
     private void SSAABresenham_Line(Color c[][],int x1, int y1, int x2, int y2, Color cor){
         x1=x1*3;
         y1=y1*3;
@@ -870,8 +931,16 @@ int inix, iniy, finx, finy;
         
         }
     }
-        
-    private void Bresenham_Line(int x1, int y1, int x2, int y2){
+        /**
+         * Bresenham line comum, direto na area de desenho.
+         * 
+         * 
+         * @param x1
+         * @param y1
+         * @param x2
+         * @param y2 
+         */
+    public void Bresenham_Line(int x1, int y1, int x2, int y2){
         
         int xincr, yincr;
         int x, y, p, c1, c2;
@@ -944,7 +1013,11 @@ int inix, iniy, finx, finy;
     
     //armazena a cor escolhida para desenhar
     Color cor;
-    
+    /**
+     * Plota a cor escolhida nas coordenadas dadas
+     * @param x
+     * @param y 
+     */
     public void plota(int x,int y){
             
         Graphics g = super.getGraphics();
@@ -952,7 +1025,14 @@ int inix, iniy, finx, finy;
         g.drawOval(x, y, 2, 2);
         g.fillOval(x, y, 2, 2);
     }
-    
+    /**
+     * Plota a cor escolhida nas coordenadas dadas da matriz
+     * <p> a matriz c é 9x maior para fins de anti aliasing
+     * @param c
+     * @param x
+     * @param y
+     * @param color 
+     */
         public void SSAAplota(Color c[][],int x,int y, Color color){
             //aqui é preciso testar se o ponto está dentro da matriz
         int altura=c.length;
