@@ -1146,7 +1146,7 @@ int inix, iniy, finx, finy;
     public void plota(int x,int y){
             
         Graphics g = super.getGraphics();
-        
+        System.out.println("----------------------"+cor);
         g.setColor(cor);
         g.drawOval(x, y, 2, 2);
         g.fillOval(x, y, 2, 2);
