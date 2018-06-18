@@ -60,7 +60,8 @@ public class Graphic extends javax.swing.JFrame {
         Antialiasing = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Bresenham");
+        setTitle("Bresenham: Guilherme David - Rama Alvim");
+        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(0, 0, 0));
 
         Painel_draw.setBackground(new java.awt.Color(255, 255, 255));
@@ -86,7 +87,7 @@ public class Graphic extends javax.swing.JFrame {
         Painel_draw.setLayout(Painel_drawLayout);
         Painel_drawLayout.setHorizontalGroup(
             Painel_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 795, Short.MAX_VALUE)
+            .addGap(0, 791, Short.MAX_VALUE)
         );
         Painel_drawLayout.setVerticalGroup(
             Painel_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,6 +95,8 @@ public class Graphic extends javax.swing.JFrame {
         );
 
         Color_btn.setText("Selecionar Cor");
+        Color_btn.setMaximumSize(new java.awt.Dimension(75, 23));
+        Color_btn.setMinimumSize(new java.awt.Dimension(75, 23));
         Color_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Color_btnActionPerformed(evt);
@@ -107,11 +110,11 @@ public class Graphic extends javax.swing.JFrame {
         Selected_color.setLayout(Selected_colorLayout);
         Selected_colorLayout.setHorizontalGroup(
             Selected_colorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
+            .addGap(0, 40, Short.MAX_VALUE)
         );
         Selected_colorLayout.setVerticalGroup(
             Selected_colorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         buttonGroup1.add(Reta);
@@ -159,6 +162,7 @@ public class Graphic extends javax.swing.JFrame {
         });
 
         buttonGroup2.add(transladar_btn);
+        transladar_btn.setSelected(true);
         transladar_btn.setText("Transladar");
 
         buttonGroup2.add(rotacionar_btn);
@@ -166,6 +170,8 @@ public class Graphic extends javax.swing.JFrame {
 
         Antialiasing.setText("Anti Aliasing");
         Antialiasing.setActionCommand("Antialiasing");
+        Antialiasing.setMaximumSize(new java.awt.Dimension(75, 23));
+        Antialiasing.setMinimumSize(new java.awt.Dimension(75, 23));
         Antialiasing.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AntialiasingActionPerformed(evt);
@@ -178,18 +184,19 @@ public class Graphic extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(Painel_draw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Reta)
                     .addComponent(Circunferencia)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Color_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                        .addComponent(Color_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Selected_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(transladar_btn)
+                    .addComponent(rotacionar_btn)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addComponent(lft_btn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,10 +207,9 @@ public class Graphic extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rgt_btn))
                             .addComponent(up_btn)))
-                    .addComponent(transladar_btn)
-                    .addComponent(rotacionar_btn)
-                    .addComponent(Antialiasing, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(Antialiasing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_desfazer_reta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,7 +217,7 @@ public class Graphic extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Selected_color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Color_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Color_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -226,7 +232,7 @@ public class Graphic extends javax.swing.JFrame {
                 .addComponent(transladar_btn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rotacionar_btn)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(up_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -235,7 +241,7 @@ public class Graphic extends javax.swing.JFrame {
                     .addComponent(transrot_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(down_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
             .addComponent(Painel_draw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -536,7 +542,7 @@ int inix, iniy, finx, finy;
             }
             i+=3;
         }
-        
+        //verifica se os pontos selecionados são de retas ou circunferências
         if(rouc.size() > 0){
             if(rouc.get(k) == 1){
                 is_reta = true;
@@ -550,71 +556,73 @@ int inix, iniy, finx, finy;
     private void up_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_up_btnActionPerformed
         // TODO add your handling code here:
         
+        //se transladar estiver selecionado
         if(transladar_btn.isSelected()){
+        
+            Color temp = cor;
+            cor = Color.WHITE;
+        
+            //recebe valor 1 (arbitrario) para indicar que era uma translacao/rotacao
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
+      
+        
+            //desenha se for linha ou coluna
+            if(is_reta){
+                rouc.add(1);
+                Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+            }else{
+                rouc.add(2);
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+            }
+    
+            //realiza a translacao
+            y1selected -= Integer.parseInt(transrot_value.getText());
+            y2selected -= Integer.parseInt(transrot_value.getText());
+                
+            //adiciona os pontos
+            pontos.add(x1selected);
+            pontos.add(y1selected);
+            pontos.add(x2selected);
+            pontos.add(y2selected);
+            
+            //salva a cor correspondente
+            arr_cor.add(temp);
+            is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+               
+            cor = temp;
+            
+            if(is_reta){
+                Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+            }else{
+                Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+            }
+        
+        }else if(rotacionar_btn.isSelected()){
         
             Color temp = cor;
             cor = Color.WHITE;
         
             is_trans_rot.set(is_trans_rot.size()-1, 1);
       
-        
-                 if(is_reta){
-                    rouc.add(1);
-                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
-                
-                }else{
-                    rouc.add(2);
-                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
-                }
-    
-                
-                y1selected -= Integer.parseInt(transrot_value.getText());
-                y2selected -= Integer.parseInt(transrot_value.getText());
-                
-                pontos.add(x1selected);
-                pontos.add(y1selected);
-                pontos.add(x2selected);
-                pontos.add(y2selected);
-                
-    
-                
-                arr_cor.add(temp);
-                is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
-                
-               
-                cor = temp;
-               // g.setColor(Color.WHITE);
-                if(is_reta){
-                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
-                
-                }else{
-                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
-                
-                }
-        
-        }else if(rotacionar_btn.isSelected()){
-        
-             Color temp = cor;
-            cor = Color.WHITE;
-        
-            is_trans_rot.set(is_trans_rot.size()-1, 1);
-      
          
-                 if(is_reta){
-                    rouc.add(1);
-                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+            if(is_reta){
+                rouc.add(1);
+                Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
                 
-                }else{
-                    rouc.add(2);
-                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
-                }
+            }else{
+                rouc.add(2);
+                Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+            }
     
-                  x1selected = (int)(x1selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y2selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
-                  y1selected = (int)(x1selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y2selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
-                  x2selected = (int)(x2selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y1selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
-                  y2selected = (int)(x2selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y1selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
-                  //x2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
-                  //y2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
+                x1selected = (int)(x1selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y2selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
+                y1selected = (int)(x1selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y2selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
+                x2selected = (int)(x2selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y1selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
+                y2selected = (int)(x2selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y1selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
+                //x2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
+                //y2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
                 /*
                 y1selected -= Integer.parseInt(transrot_value.getText());
                 y2selected -= Integer.parseInt(transrot_value.getText());
