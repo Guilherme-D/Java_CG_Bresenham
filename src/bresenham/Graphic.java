@@ -55,8 +55,8 @@ public class Graphic extends javax.swing.JFrame {
         rgt_btn = new javax.swing.JButton();
         lft_btn = new javax.swing.JButton();
         transrot_value = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        transladar_btn = new javax.swing.JRadioButton();
+        rotacionar_btn = new javax.swing.JRadioButton();
         Antialiasing = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,14 +71,14 @@ public class Graphic extends javax.swing.JFrame {
             }
         });
         Painel_draw.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Painel_drawMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Painel_drawMousePressed(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 Painel_drawMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Painel_drawMouseClicked(evt);
             }
         });
 
@@ -138,6 +138,11 @@ public class Graphic extends javax.swing.JFrame {
         });
 
         down_btn.setText("v");
+        down_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                down_btnActionPerformed(evt);
+            }
+        });
 
         rgt_btn.setText(">");
         rgt_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -147,12 +152,17 @@ public class Graphic extends javax.swing.JFrame {
         });
 
         lft_btn.setText("<");
+        lft_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lft_btnActionPerformed(evt);
+            }
+        });
 
-        buttonGroup2.add(jRadioButton1);
-        jRadioButton1.setText("Transladar");
+        buttonGroup2.add(transladar_btn);
+        transladar_btn.setText("Transladar");
 
-        buttonGroup2.add(jRadioButton2);
-        jRadioButton2.setText("Rotacionar");
+        buttonGroup2.add(rotacionar_btn);
+        rotacionar_btn.setText("Rotacionar");
 
         Antialiasing.setText("Anti Aliasing");
         Antialiasing.setActionCommand("Antialiasing");
@@ -190,8 +200,8 @@ public class Graphic extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rgt_btn))
                             .addComponent(up_btn)))
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
+                    .addComponent(transladar_btn)
+                    .addComponent(rotacionar_btn)
                     .addComponent(Antialiasing, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -213,9 +223,9 @@ public class Graphic extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(Antialiasing, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(jRadioButton1)
+                .addComponent(transladar_btn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton2)
+                .addComponent(rotacionar_btn)
                 .addGap(38, 38, 38)
                 .addComponent(up_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,8 +256,12 @@ public class Graphic extends javax.swing.JFrame {
     
     private void Painel_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseClicked
         // TODO add your handling code here:
+        
+        System.err.println(cor);
         Graphics g = super.getGraphics();
         
+                
+               
         if(evt.getButton() == evt.BUTTON1){
                        
             //Coordenadas x e y do mouse quando clicar no painel
@@ -262,18 +276,21 @@ public class Graphic extends javax.swing.JFrame {
             g.fillOval(x, y, 5, 5);
 
        
-            
+           
             //verifica se dois pontos foram escolhidos e caso seja, chama o bresenham
             if(cont_click == 1){
                 x1 = x;
                 y1 = y;
 
             }else if(cont_click == 2){
+                
                 x2 = x;
                 y2 = y;
                 cont_click = 0;
                 
                 if(Reta.isSelected()){
+                    
+                    
                     Bresenham_Line(x1, y1, x2, y2);
                     pontos.add(x1);
                     pontos.add(y1);
@@ -326,6 +343,7 @@ public class Graphic extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         JColorChooser jcc = new JColorChooser();
+        cor = Color.BLACK;
         cor = jcc.showDialog(null, "Selecione uma cor", Color.RED);
         
         Selected_color.setBackground(cor);
@@ -334,24 +352,6 @@ public class Graphic extends javax.swing.JFrame {
 
     private void Painel_drawMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseDragged
         // TODO add your handling code here:
-        Graphics g = super.getGraphics();
-        Graphics2D g2d = (Graphics2D)g;
-        
-        //g2d.rotate(90.0, getMousePosition().x, getMousePosition().y);
-        /*
-        
-        if(g.getColor() != Color.WHITE){
-              int a = Math.abs((getMousePosition().x)+x1selected);
-              int b = Math.abs((getMousePosition().y)+y1selected);
-              int c = Math.abs((getMousePosition().x)+x2selected);
-              int d = Math.abs((getMousePosition().y)+y2selected);
-              
-              Bresenham_Line(x1selected+getMousePosition().x, y1selected+getMousePosition().y, x2selected+getMousePosition().x, y2selected+getMousePosition().y);
-         //Bresenham_Line(getMousePosition().x-x1+getMousePosition().x, getMousePosition().y-y1+getMousePosition().y, getMousePosition().x-x2+getMousePosition().x, getMousePosition().y-y2+getMousePosition().y);
-            System.out.println(a+" "+x1selected+"    b "+b+"   "+y1selected);
-        
-        }
-       */
     }//GEN-LAST:event_Painel_drawMouseDragged
 int inix, iniy, finx, finy;
     private void btn_desfazer_retaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desfazer_retaActionPerformed
@@ -395,11 +395,12 @@ int inix, iniy, finx, finy;
         
         //remove da lista a indicação de reta/circunferencia
         rouc.remove(size_rouc);
+        arr_cor.remove(size_rouc);
         
         x1selected += is_trans_rot.get(is_trans_rot.size()-1);
-                //y1selected += Integer.parseInt(transrot_value.getText());
-                x2selected += is_trans_rot.get(is_trans_rot.size()-1);
-               // y2selected += Integer.parseInt(transrot_value.getText());
+        //y1selected += Integer.parseInt(transrot_value.getText());
+        x2selected += is_trans_rot.get(is_trans_rot.size()-1);
+        // y2selected += Integer.parseInt(transrot_value.getText());
         
         is_trans_rot.remove(is_trans_rot.size()-1);
         
@@ -482,7 +483,7 @@ int inix, iniy, finx, finy;
     private void Painel_drawMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Painel_drawMouseReleased
         // TODO add your handling code here:
        
-       is_reta = true;
+       //is_reta = true;
         finx = getMousePosition().x;
         finy = getMousePosition().y;
         
@@ -514,6 +515,7 @@ int inix, iniy, finx, finy;
          
          
         int cont = 0;
+        int k = 0;
         //ve se ospontos estao dentro do retangulo
         for(int i = 0; i < pontos.size()-1; i++){
        
@@ -547,10 +549,10 @@ int inix, iniy, finx, finy;
                         //recebe valor 1 (arbitrario) para indicar que uma mudança ocorreu
                         is_trans_rot.set(j, 1);
                         
-                        if(rouc.get(cont)==2){
-                            is_reta = false;
-                            
+                        if(j != 0){
+                            k++;
                         }
+                         j = pontos.size();
                     }
                     cont += 4;
                 }
@@ -560,6 +562,13 @@ int inix, iniy, finx, finy;
             i+=3;
         }
         
+        if(rouc.size() > 0){
+            if(rouc.get(k) == 1){
+                is_reta = true;
+            }else{
+                is_reta = false;
+            }
+        }
        
         re_draw();
        
@@ -576,65 +585,149 @@ int inix, iniy, finx, finy;
  boolean is_reta = true;
     private void up_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_up_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_up_btnActionPerformed
-
-    private void rgt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgt_btnActionPerformed
-        // TODO add your handling code here:
         
+        if(transladar_btn.isSelected()){
         
-        Color temp = cor;
-        cor = Color.WHITE;
-        /*Graphics g = super.getGraphics();
-        g.setColor(Color.BLUE);*/
+            Color temp = cor;
+            cor = Color.WHITE;
         
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
       
         
                  if(is_reta){
                     rouc.add(1);
-                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
                 
                 }else{
                     rouc.add(2);
                     Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
-                
                 }
+    
                 
-
-                
-                
-                x1selected += Integer.parseInt(transrot_value.getText());
-                //y1selected += Integer.parseInt(transrot_value.getText());
-                x2selected += Integer.parseInt(transrot_value.getText());
-               // y2selected += Integer.parseInt(transrot_value.getText());
+                y1selected -= Integer.parseInt(transrot_value.getText());
+                y2selected -= Integer.parseInt(transrot_value.getText());
                 
                 pontos.add(x1selected);
                 pontos.add(y1selected);
                 pontos.add(x2selected);
                 pontos.add(y2selected);
                 
-               
-                
+    
                 
                 arr_cor.add(temp);
                 is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
                 
-                System.out.println("ssssssssssss");
-                
-                
+               
                 cor = temp;
                // g.setColor(Color.WHITE);
                 if(is_reta){
-                    rouc.add(1);
                      Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+                }
+        
+        }else if(rotacionar_btn.isSelected()){
+        
+             Color temp = cor;
+            cor = Color.WHITE;
+        
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
+      
+         
+                 if(is_reta){
+                    rouc.add(1);
+                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
                 
                 }else{
                     rouc.add(2);
                     Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                }
+    
+                  x1selected = (int)(x1selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y2selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
+                  y1selected = (int)(x1selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y2selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
+                  x2selected = (int)(x2selected*(Math.cos(Integer.parseInt(transrot_value.getText())))-((int)y1selected*Math.sin(Integer.parseInt(transrot_value.getText()))));
+                  y2selected = (int)(x2selected*(Math.sin(Integer.parseInt(transrot_value.getText())))+((int)y1selected*Math.cos(Integer.parseInt(transrot_value.getText()))));
+                  //x2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
+                  //y2selected *= (int)(Math.cos(Integer.parseInt(transrot_value.getText())));
+                /*
+                y1selected -= Integer.parseInt(transrot_value.getText());
+                y2selected -= Integer.parseInt(transrot_value.getText());
+                */
+                pontos.add(x1selected);
+                pontos.add(y1selected);
+                pontos.add(x2selected);
+                pontos.add(y2selected);
+                
+    
+                
+                arr_cor.add(temp);
+                is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+               
+                cor = temp;
+               // g.setColor(Color.WHITE);
+                if(is_reta){
+                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
                 
                 }
-                
-              //i = pontos.size();
+        
+        }
+        
+    }//GEN-LAST:event_up_btnActionPerformed
 
+    private void rgt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgt_btnActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+       if(transladar_btn.isSelected()){
+       
+            Color temp = cor;
+            cor = Color.WHITE;
+
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
+            
+            if(is_reta){
+                rouc.add(1);
+                Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+            }else{
+                rouc.add(2);
+                Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+            }
+    
+                
+            x1selected += Integer.parseInt(transrot_value.getText());
+            x2selected += Integer.parseInt(transrot_value.getText());
+                            
+            pontos.add(x1selected);
+            pontos.add(y1selected);
+            pontos.add(x2selected);
+            pontos.add(y2selected);
+            
+    
+                
+            arr_cor.add(temp);
+            is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+               
+            cor = temp;
+            
+            if(is_reta){
+                Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+            }else{
+                Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+            }
+            
+       }else if(rotacionar_btn.isSelected()){
+        
+        
+        }
         
     }//GEN-LAST:event_rgt_btnActionPerformed
 
@@ -719,6 +812,111 @@ int inix, iniy, finx, finy;
         System.out.println(""+arr_cor.get(i));
         }
     }//GEN-LAST:event_AntialiasingActionPerformed
+
+    private void lft_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lft_btnActionPerformed
+        // TODO add your handling code here:
+         if(transladar_btn.isSelected()){
+
+
+            Color temp = cor;
+            cor = Color.WHITE;
+
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
+      
+        
+                 if(is_reta){
+                    rouc.add(1);
+                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    rouc.add(2);
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                }
+    
+                
+                x1selected -= Integer.parseInt(transrot_value.getText());
+                //y1selected += Integer.parseInt(transrot_value.getText());
+                x2selected -= Integer.parseInt(transrot_value.getText());
+               // y2selected += Integer.parseInt(transrot_value.getText());
+                
+                pontos.add(x1selected);
+                pontos.add(y1selected);
+                pontos.add(x2selected);
+                pontos.add(y2selected);
+                
+    
+                
+                arr_cor.add(temp);
+                is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+               
+                cor = temp;
+               // g.setColor(Color.WHITE);
+                if(is_reta){
+                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+                }
+        }else if(rotacionar_btn.isSelected()){
+        
+        
+        } 
+                                           
+
+    }//GEN-LAST:event_lft_btnActionPerformed
+
+    private void down_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_down_btnActionPerformed
+        // TODO add your handling code here:
+         if(transladar_btn.isSelected()){
+
+
+            Color temp = cor;
+            cor = Color.WHITE;
+
+            is_trans_rot.set(is_trans_rot.size()-1, 1);
+      
+        
+                 if(is_reta){
+                    rouc.add(1);
+                    Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    rouc.add(2);
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                }
+    
+                
+                y1selected += Integer.parseInt(transrot_value.getText());
+                y2selected += Integer.parseInt(transrot_value.getText());
+                
+                pontos.add(x1selected);
+                pontos.add(y1selected);
+                pontos.add(x2selected);
+                pontos.add(y2selected);
+                
+    
+                
+                arr_cor.add(temp);
+                is_trans_rot.add(Integer.parseInt(transrot_value.getText()));
+                
+               
+                cor = temp;
+               // g.setColor(Color.WHITE);
+                if(is_reta){
+                     Bresenham_Line(x1selected, y1selected, x2selected, y2selected);
+                
+                }else{
+                    Bresenham_circle(x1selected, y1selected, x2selected, y2selected);
+                
+                }
+
+        }else if(rotacionar_btn.isSelected()){
+        
+        
+        }
+    }//GEN-LAST:event_down_btnActionPerformed
         
     
     
@@ -1021,6 +1219,7 @@ int inix, iniy, finx, finy;
     public void plota(int x,int y){
             
         Graphics g = super.getGraphics();
+        
         g.setColor(cor);
         g.drawOval(x, y, 2, 2);
         g.fillOval(x, y, 2, 2);
@@ -1110,10 +1309,10 @@ int inix, iniy, finx, finy;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton down_btn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JButton lft_btn;
     private javax.swing.JButton rgt_btn;
+    private javax.swing.JRadioButton rotacionar_btn;
+    private javax.swing.JRadioButton transladar_btn;
     private javax.swing.JTextField transrot_value;
     private javax.swing.JButton up_btn;
     // End of variables declaration//GEN-END:variables
